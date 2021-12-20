@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tennis-num2</title>
+    <style>
+        #table-score-board td{
+            width: 80px;
+            height: 50px;
+            text-align: center;
+            font-weight: bold;
+        }
+        #table-score-board td:first-child{
+            width: 160px;
+        }
+        #table-point td{
+            width: 60px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .player-name{
+            width: 150px;
+            text-align: center;
+            font-weight: bold;
+        }
+        #table-court-change{
+            border: 2px solid;
+            border-collapse: collapse;
+        }
+        #table-court-change td{
+            width: 150px;
+            height: 100px;
+            text-align: center;
+            font-weight: bold;
+            border: 2px solid;
+        }
+        #table-court-change td:first-child{
+            width: 20px;
+            border-left: solid white;
+        }
+        #table-court-change td:last-child{
+            width: 20px;
+            border-right: solid white;
+        }
+        #table-court-change tr:first-child td:first-child{
+            border-top: solid white;
+            border-bottom: solid white;
+        }
+        #table-court-change tr:last-child td:first-child{
+            border-top: solid white;
+            border-bottom: solid white;
+        }
+        #table-court-change tr:first-child td:last-child{
+            border-top: solid white;
+            border-bottom: solid white;
+        }
+        #table-court-change tr:last-child td:last-child{
+            border-top: solid white;
+            border-bottom: solid white;
+        }
+        #table-court-change tr:first-child td,
+        #table-court-change tr:last-child td{
+            height: 20px;
+        }
+        
+    </style>
+</head>
+<body>
+    <h3>tennis-num2</h3>
+    <div class="div-score-board">
+        <table id="table-score-board" border="1">
+            <tr>
+                <td>NAME</td>
+                <td>1 SET</td>
+                <td>2 SET</td>
+                <td>3 SET</td>
+                <td>4 SET</td>
+                <td>5 SET</td>
+                <td>TOTAL</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+    <br>
+    <div class="div-points">
+        <table id="table-point" border="1">
+            <tr>
+                <td>NAME</td>
+                <td>SET</td>
+                <td>GAME</td>
+                <td>SCORE</td>
+            </tr>
+            <tr>
+                <td><input type="text" class="player-name" value="Novak Djokovic"></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr><td><input type="text" class="player-name" value="Rafael Nadal"></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        </table>
+    </div>
+    <br>
+    <div class="div-end-change">
+        <table id="table-court-change">
+            <tr>
+                <td></td>
+                <td colspan="2">double alley</td>
+                <td colspan="2">double alley</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td rowspan="2"></td>
+                <td>ad court</td>
+                <td>deuce court</td>
+                <td rowspan="2"></td>
+                <td>Rafael Nadal</td>
+            </tr>
+            <tr>
+                <td>Novak Djokovic</td>
+                <td>deuce court</td>
+                <td>ad court</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td colspan="2">double alley</td>
+                <td colspan="2">double alley</td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+
+    <h1>end</h1>
+    <script>
+        let scoreCall = ["love","fifteen","thirty","fourty","all","duce","game get"];
+
+        let playerNames = document.getElementsByClassName('player-name');
+
+        let tableScoreBoard = document.getElementById('table-score-board');
+
+        let tablePoint = document.getElementById('table-point');
+
+        let tableCourtChange = document.getElementById('table-court-change');
+
+        let up_score = 0;
+        let down_score = 0;
+        let gameNum = 1;
+        let up_game_score = 0;
+        let down_game_score = 0;
+        let setNum = 1;
+
+        playerNames[0].style.backgroundColor = "greenyellow";
+
+        tableScoreBoard.rows[1].cells[0].innerHTML = playerNames[0].value;
+        tableScoreBoard.rows[2].cells[0].textContent = playerNames[1].value;
+
+        function serveColor(){
+            if(gameNum %2 != 0){
+                playerNames[0].style.backgroundColor = "greenyellow";
+                playerNames[1].style.backgroundColor = "";
+            }
+            else{
+                playerNames[1].style.backgroundColor = "pink";
+                playerNames[0].style.backgroundColor = "";
+            }
+        }
+
+
+        for(let i = 0; i < playerNames.length; i++){
+            playerNames[i].addEventListener('click', function(){
+                if(i == 0){
+                    up_score++;
+                    upScore();
+                    // announce();
+                }
+                else if(i == 1){
+                    down_score++;
+                    downScore();
+                    // announce();
+                }
+                
+            })
+        }
+
+        let tie_break = "";
+        let up_onePoint = 0;
+        let deuce_count = 0;
+        function upScore(){
+            if(tie_break == "tie break"){
+                up_onePoint++;
+                tablePoint.rows[1].cells[3].innerHTML = up_onePoint;
+                
+                suddenDeath();
+                return;
+            }
+            
+            if(up_score == 1){
+                tablePoint.rows[1].cells[3].innerHTML = 15;
+                // deToAd();
+            }
+            else if(up_score == 2){
+                tablePoint.rows[1].cells[3].innerHTML = 30;
+                // adToDe();
+            }
+            else if(up_score == 3){
+                tablePoint.rows[1].cells[3].innerHTML = 40;
+                // deToAd();
+            }
+            else if(up_score == 3 && up_score == down_score){
+                deuce_count++;
+                alert(deuce_count + "nd(th)  deuce");
+            }
+            else if(up_score >= 3 && up_score == down_score){
+                tablePoint.rows[1].cells[3].innerHTML = 40;
+                tablePoint.rows[2].cells[3].innerHTML = 40;
+                deuce_count++;
+                alert(deuce_count + "nd(th)  deuce"); 
+            }
+            else if(up_score >= 3 && up_score == down_score+1){
+                tablePoint.rows[1].cells[3].innerHTML = "AD";
+                tablePoint.rows[2].cells[3].innerHTML = "";
+                alert(playerNames[0].value + "  advantage");
+            }
+            else if(up_score >= 3 && up_score >= down_score+2){
+                gameNum++;
+                up_score++;
+                up_game_score++;
+                tablePoint.rows[1].cells[3].innerHTML = 0;
+                tablePoint.rows[2].cells[3].innerHTML = 0;
+                tablePoint.rows[1].cells[2].innerHTML = up_game_score;
+
+                if(setNum == 1){
+                    tableScoreBoard.rows[1].cells[1].innerHTML = up_game_score;
+                    if(tableScoreBoard.rows[2].cells[1].innerHTML == ""){
+                        tableScoreBoard.rows[2].cells[1].innerHTML = 0;
+                    }
+                }
+                else if(setNum == 2){
+                    tableScoreBoard.rows[1].cells[2].innerHTML = up_game_score;
+                    if(tableScoreBoard.rows[2].cells[2].innerHTML == ""){
+                        tableScoreBoard.rows[2].cells[2].innerHTML = 0;
+                    }
+                }
+                else if(setNum == 3){
+                    tableScoreBoard.rows[1].cells[3].innerHTML = up_game_score;
+                    if(tableScoreBoard.rows[2].cells[3].innerHTML == ""){
+                        tableScoreBoard.rows[2].cells[3].innerHTML = 0;
+                    }
+                }
+                else if(setNum == 4){
+                    tableScoreBoard.rows[1].cells[4].innerHTML = up_game_score;
+                    if(tableScoreBoard.rows[2].cells[4].innerHTML == ""){
+                        tableScoreBoard.rows[2].cells[4].innerHTML = 0;
+                    }
+                }
+                else if(setNum == 5){
+                    tableScoreBoard.rows[1].cells[5].innerHTML = up_game_score;
+                    if(tableScoreBoard.rows[2].cells[5].innerHTML == ""){
+                        tableScoreBoard.rows[2].cells[5].innerHTML = 0;
+                    }
+                }
+                up_score = 0; down_score = 0;
+                deuce_count = 0;
+                serveColor();
+                alert(playerNames[0].value + "  game win");
+                gameScore();
+            }
+        }
+
+        let down_onePoint = 0;
+        function downScore(){
+            if(tie_break == "tie break"){
+                down_onePoint++;
+                tablePoint.rows[2].cells[3].innerHTML = down_onePoint;
+                suddenDeath();
+                return;
+            }
+
+            if(down_score == 1){
+                tablePoint.rows[2].cells[3].innerHTML = 15;
+                // deToAd();
+            }
+            else if(down_score == 2){
+                tablePoint.rows[2].cells[3].innerHTML = 30;
+                // adToDe();
+            }
+            else if(down_score == 3){
+                tablePoint.rows[2].cells[3].innerHTML = 40;
+                // deToAd();
+            }
+            else if(down_score >= 3 && down_score == up_score){
+                tablePoint.rows[1].cells[3].innerHTML = 40;
+                tablePoint.rows[2].cells[3].innerHTML = 40;
+                deuce_count++;
+                alert(deuce_count + "nd(th)  deuce"); 
+            }
+            else if(down_score >= 4 && down_score == up_score+1){
+                tablePoint.rows[1].cells[3].innerHTML = "";
+                tablePoint.rows[2].cells[3].innerHTML = "AD";
+                alert(playerNames[1].value + "  advantage");
+            }
+            else if(down_score >= 4 && down_score == up_score){
+                tablePoint.rows[1].cells[3].innerHTML = 40;
+                tablePoint.rows[2].cells[3].innerHTML = 40;
+            }
+            else if(down_score >= 4 && down_score >= up_score+2){
+                gameNum++;
+                down_score++;
+                down_game_score++;
+                tablePoint.rows[1].cells[3].innerHTML = 0;
+                tablePoint.rows[2].cells[3].innerHTML = 0;
+                tablePoint.rows[2].cells[2].innerHTML = down_game_score;
+
+                if(setNum == 1){
+                    tableScoreBoard.rows[2].cells[1].innerHTML = down_game_score;
+                    if(tableScoreBoard.rows[1].cells[1].innerHTML == ""){
+                        tableScoreBoard.rows[1].cells[1].innerHTML = 0;
+                    }
+                }
+                else if(setNum == 2){
+                    tableScoreBoard.rows[2].cells[2].innerHTML = down_game_score;
+                    if(tableScoreBoard.rows[1].cells[2].innerHTML == ""){
+                        tableScoreBoard.rows[1].cells[2].innerHTML = 0;
+                    }
+                }
+                else if(setNum == 3){
+                    tableScoreBoard.rows[2].cells[3].innerHTML = down_game_score;
+                    if(tableScoreBoard.rows[1].cells[3].innerHTML == ""){
+                        tableScoreBoard.rows[1].cells[3].innerHTML = 0;
+                    }
+                }
+                else if(setNum == 4){
+                    tableScoreBoard.rows[2].cells[4].innerHTML = down_game_score;
+                    if(tableScoreBoard.rows[1].cells[4].innerHTML == ""){
+                        tableScoreBoard.rows[1].cells[4].innerHTML = 0;
+                    }
+                }
+                else if(setNum == 5){
+                    tableScoreBoard.rows[2].cells[5].innerHTML = down_game_score;
+                    if(tableScoreBoard.rows[1].cells[5].innerHTML == ""){
+                        tableScoreBoard.rows[1].cells[5].innerHTML = 0;
+                    }
+                }
+
+                up_score = 0; down_score = 0;
+                deuce_count = 0;
+                serveColor();
+                alert(playerNames[1].value + "  game win");
+                gameScore();
+            }
+        }
+
+        // set score
+        let up_setScoreSum = 0; let down_setScoreSum = 0;
+        function gameScore(){
+            let up_gameScoreSum = tablePoint.rows[1].cells[2].innerHTML;
+            let down_gameScoreSum = tablePoint.rows[2].cells[2].innerHTML;
+
+            let up_onePoint = 0; let down_onePoint = 0; 
+            if(up_gameScoreSum == 2 && down_gameScoreSum == 2){
+                alert("tie break!!!!" );
+                tie_break = "tie break";
+                tablePoint.rows[0].cells[3].innerHTML = "POINT";
+                // for(let i = 0; i < playerNames.length; i++){
+                //     up_score = 0; down_score = 0;
+                //     playerNames[i].addEventListener('click', function(){
+                //         if(i == 0){
+                //             up_onePoint++;
+                //             tablePoint.rows[1].cells[3].innerHTML = up_onePoint;
+                //         }
+                //         else if(i == 1){
+                //             down_onePoint++;
+                //             tablePoint.rows[2].cells[3].innerHTML = down_onePoint;
+                //         }
+                //     })
+                // }
+            }
+
+            if(up_gameScoreSum >=3 && up_gameScoreSum > down_gameScoreSum + 2){
+                up_setScoreSum++;
+                tablePoint.rows[1].cells[1].innerHTML = up_setScoreSum;
+
+                tableScoreBoard.rows[1].cells[6].innerHTML = tablePoint.rows[1].cells[1].innerHTML;
+                tableScoreBoard.rows[2].cells[6].innerHTML = tablePoint.rows[2].cells[1].innerHTML;
+
+                up_game_score = 0; down_game_score = 0;
+
+                tablePoint.rows[1].cells[2].innerHTML = 0;
+                tablePoint.rows[2].cells[2].innerHTML = 0;
+                alert(playerNames[0].value + "  set win");
+                setNum++;
+            }
+
+            if(down_gameScoreSum >=3 && down_gameScoreSum > up_gameScoreSum + 2){
+                down_setScoreSum++;
+                tablePoint.rows[2].cells[1].innerHTML = down_setScoreSum;
+
+                tableScoreBoard.rows[1].cells[6].innerHTML = tablePoint.rows[1].cells[1].innerHTML;
+                tableScoreBoard.rows[2].cells[6].innerHTML = tablePoint.rows[2].cells[1].innerHTML;
+
+                up_game_score = 0; down_game_score = 0;
+
+                tablePoint.rows[1].cells[2].innerHTML = 0;
+                tablePoint.rows[2].cells[2].innerHTML = 0;
+                alert(playerNames[1].value + "  set win");
+                setNum++;
+            }
+        }
+
+        function suddenDeath(){
+            if(up_onePoint >= 3 && up_onePoint >= down_onePoint + 2){
+                up_setScoreSum++;
+                tablePoint.rows[1].cells[1].innerHTML = up_setScoreSum;
+                up_onePoint = 0;
+                // tableScoreBoard.rows[1].cells[1].innerHTML = tablePoint.rows[1].cells[1].innerHTML;
+                tablePoint.rows[0].cells[3].innerHTML = "SCORE";
+                tablePoint.rows[1].cells[3].innerHTML = 0;
+                tablePoint.rows[2].cells[3].innerHTML = 0;
+                tie_break = "";
+                alert(playerNames[0].value + "tie break win!!!");
+            }
+            else if(down_onePoint >= 3 && down_onePoint >= up_onePoint + 2){
+                down_setScoreSum++;
+                tablePoint.rows[2].cells[1].innerHTML = down_setScoreSum;
+                down_onePoint = 0;
+                // tableScoreBoard.rows[2].cells[1].innerHTML = tablePoint.rows[2].cells[1].innerHTML;
+                tablePoint.rows[0].cells[3].innerHTML = "SCORE";
+                tablePoint.rows[1].cells[3].innerHTML = 0;
+                tablePoint.rows[2].cells[3].innerHTML = 0;
+                tie_break = "";
+                alert(playerNames[1].value + "tie break win!!!");
+            }
+        }
+
+
+        function deToAd(){
+            tableCourtChange.rows[1].cells[0].innerHTML = tableCourtChange.rows[2].cells[0].innerHTML;
+            tableCourtChange.rows[2].cells[0].innerHTML = "";
+
+            tableCourtChange.rows[2].cells[3].innerHTML = tableCourtChange.rows[1].cells[5].innerHTML;
+            tableCourtChange.rows[1].cells[5].innerHTML = "";
+        }
+
+        function adToDe(){
+            tableCourtChange.rows[2].cells[0].innerHTML = tableCourtChange.rows[1].cells[0].innerHTML;
+            tableCourtChange.rows[1].cells[0].innerHTML = "";
+
+            tableCourtChange.rows[1].cells[5].innerHTML = tableCourtChange.rows[2].cells[3].innerHTML;
+            tableCourtChange.rows[2].cells[3].innerHTML = "";
+        }
+
+        function endChangeCourt(){
+
+        }
+
+        // function announce(){
+        //     if(up_score < 4 ){
+        //         if(gameNum %2 != 0){
+        //             if(up_score == 0 && down_score == 1){
+        //                 alert("love  fifty");
+        //             }
+        //             if(up_score == 0 && down_score == 2){
+        //                 alert("love  thirty");
+        //             }
+        //             if(up_score == 0 && down_score == 3){
+        //                 alert("love  fourty");
+        //                 alert(playerNames[1].value + "  game point " + " break point");
+        //             }
+        //             if(up_score == 1 && down_score == 0){
+        //                 alert("fifty  love");
+        //             }
+        //             if(up_score == 1 && down_score == 1){
+        //                 alert("fifty  all");
+        //             }
+        //             if(up_score == 1 && down_score == 2){
+        //                 alert("fifty  thirty");
+        //             }
+        //             if(up_score == 1 && down_score == 3){
+        //                 alert("fifty  fourty");
+        //                 alert(playerNames[1].value + "  game point " + " break point");
+        //             }
+        //             if(up_score == 2 && down_score == 0){
+        //                 alert("thirty  love");
+        //             }
+        //             if(up_score == 2 && down_score == 1){
+        //                 alert("thirty  fifty");
+        //             }
+        //             if(up_score == 2 && down_score == 2){
+        //                 alert("thirty  all");
+        //             }
+        //             if(up_score == 3 && down_score == 2){
+        //                 alert("fourty  thirty");
+        //                 alert(playerNames[0].value + "  game point");
+        //             }
+        //             if(up_score == 3 && down_score == 0){
+        //                 alert("fourty  love");
+        //                 alert(playerNames[0].value + "  game point");
+        //             }
+        //         }
+        //     }
+        // }
+    </script>
+</body>
+</html>

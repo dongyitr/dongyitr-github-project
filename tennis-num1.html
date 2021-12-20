@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tennis-num1</title>
+    <style>
+        #table-point td{
+            width: 60px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .player-name{
+            width: 150px;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h3>tennis-num1</h3>
+    <div class="div-points">
+        <table id="table-point" border="1">
+            <tr>
+                <td>NAME</td>
+                <td>SCORE</td>
+            </tr>
+            <tr>
+                <td><input type="text" class="player-name" value="Novak Djokovic"></td>
+                <td>0</td>
+            </tr>
+            <tr><td><input type="text" class="player-name" value="Rafael Nadal"></td>
+                <td>0</td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        let scoreCall = ["love","fifteen","thirty","fourty","all","duce","game get"];
+
+        let playerNames = document.getElementsByClassName('player-name');
+
+        let tablePoint = document.getElementById('table-point');
+
+        let up_score = 0;
+        let down_score = 0;
+        let gameNum = 1;
+
+        playerNames[0].style.backgroundColor = "greenyellow";
+        function serveColor(){
+            if(gameNum %2 != 0){
+                playerNames[0].style.backgroundColor = "greenyellow";
+                playerNames[1].style.backgroundColor = "";
+            }
+            else{
+                playerNames[1].style.backgroundColor = "greenyellow";
+                playerNames[0].style.backgroundColor = "";
+            }
+        }
+
+
+        for(let i = 0; i < playerNames.length; i++){
+            playerNames[i].addEventListener('click', function(){
+                if(i == 0){
+                    up_score++;
+                    upScore();
+                    announce();
+                }
+                else if(i == 1){
+                    down_score++;
+                    downScore();
+                    announce();
+                }
+                
+            })
+        }
+
+        function upScore(){
+            if(up_score == 1){
+                tablePoint.rows[1].cells[1].innerHTML = 15
+            }
+            else if(up_score == 2){
+                tablePoint.rows[1].cells[1].innerHTML = 30;
+            }
+            else if(up_score == 3){
+                tablePoint.rows[1].cells[1].innerHTML = 40;
+            }
+            else if(up_score >= 4 && up_score == down_score+1){
+                tablePoint.rows[1].cells[1].innerHTML = "AD";
+                tablePoint.rows[2].cells[1].innerHTML = "";
+                alert(playerNames[0].value + "  advantage");
+            }
+            else if(up_score >= 4 && up_score == down_score){
+                tablePoint.rows[1].cells[1].innerHTML = 40;
+                tablePoint.rows[2].cells[1].innerHTML = 40;
+            }
+            else if(up_score >= 4 && up_score > down_score){
+                tablePoint.rows[1].cells[1].innerHTML = 0;
+                tablePoint.rows[2].cells[1].innerHTML = 0;
+                up_score = 0; down_score = 0;
+                gameNum++;
+                serveColor();
+                alert(playerNames[0].value + "  game win");
+            }
+        }
+
+        function downScore(){
+            if(down_score == 1){
+                tablePoint.rows[2].cells[1].innerHTML = 15
+            }
+            else if(down_score == 2){
+                tablePoint.rows[2].cells[1].innerHTML = 30;
+            }
+            else if(down_score == 3){
+                tablePoint.rows[2].cells[1].innerHTML = 40;
+            }
+            else if(down_score >= 4 && down_score == up_score+1){
+                tablePoint.rows[1].cells[1].innerHTML = "";
+                tablePoint.rows[2].cells[1].innerHTML = "AD";
+                alert(playerNames[1].value + "  advantage");
+            }
+            else if(down_score >= 4 && down_score == up_score){
+                tablePoint.rows[1].cells[1].innerHTML = 40;
+                tablePoint.rows[2].cells[1].innerHTML = 40;
+            }
+            else if(down_score >= 4 && down_score > up_score){
+                tablePoint.rows[1].cells[1].innerHTML = 0;
+                tablePoint.rows[2].cells[1].innerHTML = 0;
+                up_score = 0; down_score = 0;
+                gameNum++;
+                serveColor();
+                alert(playerNames[1].value + "  game win");
+            }
+        }
+
+        function announce(){
+            if(up_score < 4 ){
+                if(gameNum %2 != 0){
+                    if(up_score == 0 && down_score == 1){
+                        alert("love  fifty");
+                    }
+                    if(up_score == 0 && down_score == 2){
+                        alert("love  thirty");
+                    }
+                    if(up_score == 0 && down_score == 3){
+                        alert("love  fourty");
+                        alert(playerNames[1].value + "  game point " + " break point");
+                    }
+                    if(up_score == 1 && down_score == 0){
+                        alert("fifty  love");
+                    }
+                    if(up_score == 1 && down_score == 1){
+                        alert("fifty  all");
+                    }
+                    if(up_score == 1 && down_score == 2){
+                        alert("fifty  thirty");
+                    }
+                    if(up_score == 1 && down_score == 3){
+                        alert("fifty  fourty");
+                        alert(playerNames[1].value + "  game point " + " break point");
+                    }
+                    if(up_score == 2 && down_score == 0){
+                        alert("thirty  love");
+                    }
+                    if(up_score == 2 && down_score == 1){
+                        alert("thirty  fifty");
+                    }
+                    if(up_score == 2 && down_score == 2){
+                        alert("thirty  all");
+                    }
+                    if(up_score == 3 && down_score == 2){
+                        alert("fourty  thirty");
+                        alert(playerNames[0].value + "  game point");
+                    }
+                    if(up_score == 3 && down_score == 0){
+                        alert("fourty  love");
+                        alert(playerNames[0].value + "  game point");
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
